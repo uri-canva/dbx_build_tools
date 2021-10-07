@@ -23,9 +23,9 @@ cpython_27 = struct(
     major_python_version = 2,
 )
 
-CPYTHON_27_TOOLCHAIN_NAME = "@dbx_build_tools//build_tools/py:toolchain_27"
-CPYTHON_37_TOOLCHAIN_NAME = "@dbx_build_tools//build_tools/py:toolchain_37"
-CPYTHON_38_TOOLCHAIN_NAME = "@dbx_build_tools//build_tools/py:toolchain_38"
+CPYTHON_27_TOOLCHAIN_NAME = "@bazel_tools//tools/python:toolchain_type"
+CPYTHON_37_TOOLCHAIN_NAME = "@bazel_tools//tools/python:toolchain_type"
+CPYTHON_38_TOOLCHAIN_NAME = "@bazel_tools//tools/python:toolchain_type"
 
 BUILD_TAG_TO_TOOLCHAIN_MAP = {
     cpython_37.build_tag: CPYTHON_37_TOOLCHAIN_NAME,

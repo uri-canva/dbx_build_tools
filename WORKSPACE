@@ -1,11 +1,19 @@
 workspace(name = "dbx_build_tools")
 
-# Add external dependencies in //build_tools/bazel:external_workspace.bzl.
-load('//build_tools/bazel:external_workspace.bzl', 'drte_deps')
+load('//build_tools/bazel:external_workspace.bzl', 'external_deps')
 
-drte_deps()
+external_deps()
 
-register_toolchains(
-    "//thirdparty/cpython:drte-off-27-toolchain",
-    "//thirdparty/cpython:drte-off-38-toolchain",
-)
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains(version = "1.17")
+
+gazelle_dependencies()

@@ -1,2 +1,0 @@
-These are simple bash scripts that hijack the standard go toolchain
-and replace them with Bazelized equivalents.

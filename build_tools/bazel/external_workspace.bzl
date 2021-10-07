@@ -30,38 +30,7 @@ DEFAULT_EXTERNAL_URLS = {
     "zstd": ["https://github.com/facebook/zstd/releases/download/v1.4.9/zstd-1.4.9.tar.gz"],
 }
 
-def drte_deps(urls = DEFAULT_EXTERNAL_URLS):
-    http_archive(
-        name = "go_1_16_7_linux_amd64_tar_gz",
-        urls = urls["go_1_16_7_linux_amd64_tar_gz"],
-        sha256 = "7fe7a73f55ba3e2285da36f8b085e5c0159e9564ef5f63ee0ed6b818ade8ef04",
-        build_file = filename_from_label("//build_tools/go:BUILD.go-dist"),
-    )
-
-    http_archive(
-        name = "org_sourceware_libffi",
-        urls = urls["org_sourceware_libffi"],
-        sha256 = "72fba7922703ddfa7a028d513ac15a85c8d54c8d67f55fa5a4802885dc652056",
-        build_file = filename_from_label("@dbx_build_tools//thirdparty/libffi:BUILD.libffi"),
-        strip_prefix = "libffi-3.3",
-    )
-
-    http_archive(
-        name = "org_python_cpython_27",
-        urls = urls["cpython_27"],
-        sha256 = "4d43f033cdbd0aa7b7023c81b0e986fd11e653b5248dac9144d508f11812ba41",
-        build_file = filename_from_label("@dbx_build_tools//thirdparty/cpython:BUILD.python27"),
-        strip_prefix = "Python-2.7.17",
-    )
-
-    http_archive(
-        name = "org_python_cpython_38",
-        urls = urls["cpython_38"],
-        sha256 = "75894117f6db7051c1b34f37410168844bbb357c139a8a10a352e9bf8be594e8",
-        build_file = filename_from_label("@dbx_build_tools//thirdparty/cpython:BUILD.python38"),
-        strip_prefix = "Python-3.8.1",
-    )
-
+def external_deps(urls = DEFAULT_EXTERNAL_URLS):
     http_archive(
         name = "com_github_plougher_squashfs_tools",
         urls = urls["com_github_plougher_squashfs_tools"],
@@ -74,6 +43,24 @@ def drte_deps(urls = DEFAULT_EXTERNAL_URLS):
         name = "bazel_skylib",
         urls = urls["bazel_skylib"],
         sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
+    )
+
+    http_archive(
+        name = "io_bazel_rules_go",
+        sha256 = "8e968b5fcea1d2d64071872b12737bbb5514524ee5f0a4f54f5920266c261acb",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.28.0/rules_go-v0.28.0.zip",
+            "https://github.com/bazelbuild/rules_go/releases/download/v0.28.0/rules_go-v0.28.0.zip",
+        ],
+    )
+
+    http_archive(
+        name = "bazel_gazelle",
+        sha256 = "62ca106be173579c0a167deb23358fdfe71ffa1e4cfdddf5582af26520f1c66f",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.23.0/bazel-gazelle-v0.23.0.tar.gz",
+            "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.23.0/bazel-gazelle-v0.23.0.tar.gz",
+        ],
     )
 
     pypi_core_deps(urls)

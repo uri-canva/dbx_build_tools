@@ -1,26 +1,4 @@
 load("//build_tools/bazel:runfiles.bzl", "runfiles_attrs", "write_runfiles_tmpl")
-load(
-    "//build_tools/py:common.bzl",
-    "ALL_TOOLCHAIN_NAMES",
-    "DbxPyVersionCompatibility",
-    "emit_py_binary",
-    "py_binary_attrs",
-    "py_file_types",
-)
-load(
-    "//build_tools/py:toolchain.bzl",
-    "BUILD_TAG_TO_TOOLCHAIN_MAP",
-    "DbxPyInterpreter",
-    "cpython_27",
-)
-
-DbxServicePyBinaryExtension = provider(fields = [
-    "service",
-    "main",
-    "lib",
-    "python",
-    "allow_missing",  # allow the service referenced by this extension to be missing
-])
 
 DbxServiceDefinitionExtension = provider(fields = [
     "service",  # service this extension is targeting
@@ -112,35 +90,7 @@ def _apply_service_extensions(ctx, services, extensions):
 
     all_runfiles = ctx.runfiles()
 
-    py_binary_info = dict()
     for ext in extensions.to_list():
-        if DbxServicePyBinaryExtension in ext:
-            info = ext[DbxServicePyBinaryExtension]
-            if info.service not in service_exe:
-                if info.allow_missing:
-                    continue
-                fail("Extension target service {} which is not in the dependency tree".format(info.service))
-            if info.service not in py_binary_info:
-                # Make up the python3/python2 compatibility based on the selected python interpreter.
-                if info.python == cpython_27.build_tag:
-                    python2_compatible = True
-                else:
-                    python2_compatible = False
-                python3_compatible = not python2_compatible
-
-                py_binary_info[info.service] = struct(
-                    main = info.main,
-                    libs = [info.lib],
-                    python2_compatible = python2_compatible,
-                    python3_compatible = python3_compatible,
-                    python = info.python,
-                )
-            else:
-                if info.main != py_binary_info[info.service].main:
-                    fail("Multiple main py binaries provided for %s", info.service)
-                if info.python != py_binary_info[info.service].python:
-                    fail("Multiple python attrs provided for %s", info.service)
-                py_binary_info[info.service].libs.append(info.lib)
         if DbxServiceDefinitionExtension in ext:
             info = ext[DbxServiceDefinitionExtension]
             if info.service not in service_deps:
@@ -156,44 +106,6 @@ def _apply_service_extensions(ctx, services, extensions):
                 all_runfiles = all_runfiles.merge(target[DefaultInfo].default_runfiles)
 
     hidden_output_transitive = []
-
-    for service in py_binary_info:
-        info = py_binary_info[service]
-        name_prefix = service.split("/")[-1]  # have a prefix that isn't just root service/test label so we can easily identify the process
-        binary_out_file = ctx.actions.declare_file(name_prefix + "-" + ctx.label.name + "-service-extensions/py-binary/" + service.strip("/") + "_py_binary")
-
-        python = ctx.toolchains[BUILD_TAG_TO_TOOLCHAIN_MAP[info.python]].interpreter[DbxPyInterpreter]
-        runfiles, _, hidden_output = emit_py_binary(
-            ctx,
-            main = info.main,
-            srcs = [info.main],
-            out_file = binary_out_file,
-            pythonpath = None,
-            deps = depset(direct = info.libs).to_list(),
-            data = [],
-            ext_modules = None,
-            python = python,
-            internal_bootstrap = False,
-            python2_compatible = info.python2_compatible,
-            python3_compatible = info.python3_compatible,
-        )
-        service_exe[service] = binary_out_file.short_path
-
-        version_file_deps = [binary_out_file]
-        version_file = ctx.actions.declare_file(
-            binary_out_file.basename + ".version",
-            sibling = binary_out_file,
-        )
-        _create_version_file(
-            ctx,
-            depset(direct = [binary_out_file], transitive = [runfiles.files]),
-            output = version_file,
-        )
-        service_version_files[service].append("//" + version_file.short_path)
-
-        all_runfiles = all_runfiles.merge(runfiles)
-        all_runfiles = all_runfiles.merge(ctx.runfiles(files = [binary_out_file, version_file]))
-        hidden_output_transitive.append(hidden_output)
 
     return [
         struct(
@@ -378,7 +290,6 @@ _service_common_attrs = {
     "_svcd_tool": _svcd_tool_attr,
     "_svcinit_tool": _svcinit_tool_attr,
 }
-_service_common_attrs.update(py_binary_attrs)
 
 _service_internal_attrs = {
     "create_version_file": attr.bool(mandatory = True),
@@ -401,7 +312,6 @@ _service_internal_attrs.update(_service_common_attrs)
 service_internal = rule(
     implementation = service_impl,
     attrs = _service_internal_attrs,
-    toolchains = ALL_TOOLCHAIN_NAMES,
     executable = True,
 )
 
@@ -471,7 +381,6 @@ _service_group_internal_attrs.update(_service_common_attrs)
 service_group_internal = rule(
     implementation = service_group_impl,
     attrs = _service_group_internal_attrs,
-    toolchains = ALL_TOOLCHAIN_NAMES,
     executable = True,
 )
 
@@ -542,49 +451,8 @@ services_internal_test = rule(
     implementation = _services_bin_impl,
     attrs = _services_bin_attrs,
     test = True,
-    toolchains = ALL_TOOLCHAIN_NAMES,
     executable = True,
 )
-
-def service_extension_py_binary_impl(ctx):
-    main = ctx.files.main[0]
-    runfiles = ctx.runfiles(collect_default = True)
-    runfiles = runfiles.merge(ctx.attr.lib[DefaultInfo].default_runfiles)
-
-    return struct(
-        providers = [
-            DbxServicePyBinaryExtension(
-                main = main,
-                lib = ctx.attr.lib,
-                service = ctx.attr.service.service_name,
-                python = ctx.attr.python,
-                allow_missing = ctx.attr.allow_missing,
-            ),
-            DefaultInfo(
-                runfiles = runfiles,
-            ),
-        ],
-    )
-
-service_extension_py_binary_internal = rule(
-    implementation = service_extension_py_binary_impl,
-    attrs = {
-        "main": attr.label(allow_files = True, mandatory = True),
-        "lib": attr.label(
-            mandatory = True,
-            providers = [[PyInfo], [DbxPyVersionCompatibility]],
-        ),
-        "service": attr.label(providers = ["service_name"], mandatory = True),
-        "python": attr.string(default = cpython_27.build_tag, values = BUILD_TAG_TO_TOOLCHAIN_MAP.keys()),
-        "allow_missing": attr.bool(default = False),
-    },
-)
-
-def dbx_service_py_binary_extension(**kwargs):
-    service_extension_py_binary_internal(
-        testonly = True,
-        **kwargs
-    )
 
 def service_extension_definition_impl(ctx):
     version_file_deps_trans = _get_version_files_transitive_dep_from_data(ctx.attr.data)

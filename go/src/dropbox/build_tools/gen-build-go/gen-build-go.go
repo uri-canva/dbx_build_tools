@@ -28,7 +28,7 @@ import (
 const (
 	workspaceFile = "WORKSPACE"
 
-	buildHeaderTmpl = `load('@dbx_build_tools//build_tools/go:go.bzl', 'dbx_go_binary', 'dbx_go_library', 'dbx_go_test')
+	buildHeaderTmpl = `load('@dbx_build_tools@io_bazel_rules_go//go:def.bzl', 'go_binary', 'go_library', 'go_test')
 
 `
 )
@@ -559,9 +559,9 @@ func (g *ConfigGenerator) generateConfig(pkg *build.Package) error {
 	var targetBuildPath string
 	targetBuildPath = determineTargetBuildPath(pkg.Dir)
 
-	rule := "dbx_go_library"
+	rule := "go_library"
 	if pkg.Name == "main" {
-		rule = "dbx_go_binary"
+		rule = "go_binary"
 	}
 	writeTarget(
 		buffer,
@@ -594,7 +594,7 @@ func (g *ConfigGenerator) generateConfig(pkg *build.Package) error {
 			_, _ = buffer.WriteString("\n")
 			writeTarget(
 				buffer,
-				"dbx_go_test",
+				"go_test",
 				name+"_test",
 				pkg.ImportPath,
 				testSrcs,
@@ -615,7 +615,7 @@ func (g *ConfigGenerator) generateConfig(pkg *build.Package) error {
 			_, _ = buffer.WriteString("\n")
 			writeTarget(
 				buffer,
-				"dbx_go_test",
+				"go_test",
 				name+"_ext_test",
 				pkg.ImportPath,
 				xTestSrcs,
@@ -853,7 +853,7 @@ func writeTarget(
 	}
 	_, _ = buffer.WriteString("  ],\n")
 
-	if rule == "dbx_go_library" {
+	if rule == "go_library" {
 		if len(targetBuildPath) > 0 {
 			_, _ = buffer.WriteString(" module_name = '" + targetBuildPath + "',\n")
 		}
@@ -899,7 +899,7 @@ func writeTarget(
 			_, _ = buffer.WriteString("    '//go/src:__subpackages__',\n")
 			_, _ = buffer.WriteString("  ],\n")
 		}
-	} else if rule == "dbx_go_binary" {
+	} else if rule == "go_binary" {
 		// NOTE: for now go binaries default to public.
 		_, _ = buffer.WriteString("  visibility=[\n")
 		_, _ = buffer.WriteString("    '//visibility:public',\n")

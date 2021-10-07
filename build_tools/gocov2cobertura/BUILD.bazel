@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "gocov2cobertura_lib",
+    srcs = ["gocov2cobertura.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/gocov2cobertura",
+    visibility = ["//visibility:private"],
+    deps = ["//devtools/coverage/cobertura/coberturaxml"],
+)
+
+go_binary(
+    name = "gocov2cobertura",
+    embed = [":gocov2cobertura_lib"],
+    visibility = ["//visibility:public"],
+)

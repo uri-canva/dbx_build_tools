@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "build-sqfs_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/build-sqfs",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//runfiles",
+        "//vendor/golang.org/x/sys/unix",
+    ],
+)
+
+go_binary(
+    name = "build-sqfs",
+    embed = [":build-sqfs_lib"],
+    visibility = ["//visibility:public"],
+)

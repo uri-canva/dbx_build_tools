@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "topological",
+    srcs = ["runner.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/svcctl/topological",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "topological_test",
+    srcs = ["runner_test.go"],
+    embed = [":topological"],
+)

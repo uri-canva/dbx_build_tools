@@ -1,0 +1,26 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "procfs",
+    srcs = [
+        "procfs.go",
+        "stat.go",
+    ],
+    importpath = "github.com/dropbox/dbx_build_tools/procfs",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "procfs_test",
+    srcs = ["stat_test.go"],
+    embed = [":procfs"],
+    deps = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "//vendor/gopkg.in/check.v1:check_v1",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "//vendor/gopkg.in/check.v1:check_v1",
+        ],
+        "//conditions:default": [],
+    }),
+)

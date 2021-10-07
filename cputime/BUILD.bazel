@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cputime",
+    srcs = ["cputime.go"],
+    cgo = True,
+    importpath = "github.com/dropbox/dbx_build_tools/cputime",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//procfs",
+        "//vendor/github.com/c9s/goprocinfo/linux",
+    ],
+)

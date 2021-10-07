@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "gojunit_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/gojunit/gojunit",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//build_tools/gojunit",
+        "//build_tools/junit",
+    ],
+)
+
+go_binary(
+    name = "gojunit",
+    embed = [":gojunit_lib"],
+    visibility = ["//visibility:public"],
+)

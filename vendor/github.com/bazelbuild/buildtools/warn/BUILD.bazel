@@ -1,0 +1,31 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "warn",
+    srcs = [
+        "multifile.go",
+        "types.go",
+        "warn.go",
+        "warn_bazel.go",
+        "warn_bazel_api.go",
+        "warn_bazel_operation.go",
+        "warn_control_flow.go",
+        "warn_cosmetic.go",
+        "warn_deprecated.go",
+        "warn_docstring.go",
+        "warn_macro.go",
+        "warn_naming.go",
+        "warn_operation.go",
+        "warn_visibility.go",
+    ],
+    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/warn",
+    importpath = "github.com/bazelbuild/buildtools/warn",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/bazelbuild/buildtools/build",
+        "//vendor/github.com/bazelbuild/buildtools/bzlenv",
+        "//vendor/github.com/bazelbuild/buildtools/edit",
+        "//vendor/github.com/bazelbuild/buildtools/labels",
+        "//vendor/github.com/bazelbuild/buildtools/tables",
+    ],
+)

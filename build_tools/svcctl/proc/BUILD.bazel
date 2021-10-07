@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "proc",
+    srcs = ["proc.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/svcctl/proc",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "proc_test",
+    srcs = ["proc_test.go"],
+    embed = [":proc"],
+)

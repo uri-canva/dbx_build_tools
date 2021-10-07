@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "runfiles",
+    srcs = ["runfiles.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/runfiles",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "runfiles_test",
+    srcs = ["runfiles_test.go"],
+    embed = [":runfiles"],
+)

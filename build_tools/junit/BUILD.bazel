@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "junit",
+    srcs = ["xml.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/junit",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "junit_test",
+    srcs = ["xml_test.go"],
+    embed = [":junit"],
+)

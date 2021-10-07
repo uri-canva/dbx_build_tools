@@ -1,0 +1,34 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "svcinit_lib",
+    srcs = ["svcinit.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/svcctl/cmd/svcinit",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//build_tools/junit",
+        "//build_tools/svcctl",
+        "//build_tools/svcctl/svclib",
+        "//proto/build_tools/svclib",
+        "//runfiles",
+        "//vendor/github.com/gogo/protobuf/proto",
+    ],
+)
+
+go_binary(
+    name = "svcinit",
+    embed = [":svcinit_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "svcinit_test",
+    srcs = ["xml_mangling_test.go"],
+    embed = [":svcinit_lib"],
+    deps = [
+        "//build_tools/bazel",
+        "//build_tools/junit",
+        "//proto/build_tools/svclib",
+        "//vendor/github.com/stretchr/testify/require",
+    ],
+)

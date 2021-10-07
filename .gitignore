@@ -1,0 +1,5 @@
+/bazel-bin
+/bazel-dbx_build_tools
+/bazel-out
+/bazel-testlogs
+.DS_Store

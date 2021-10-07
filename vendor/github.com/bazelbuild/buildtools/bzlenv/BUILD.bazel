@@ -1,0 +1,10 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "bzlenv",
+    srcs = ["bzlenv.go"],
+    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/bzlenv",
+    importpath = "github.com/bazelbuild/buildtools/bzlenv",
+    visibility = ["//visibility:public"],
+    deps = ["//vendor/github.com/bazelbuild/buildtools/build"],
+)

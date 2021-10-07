@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "svcctl_lib",
+    srcs = ["svcctl.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/svcctl/cmd/svcctl",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//build_tools/svcctl/svclib",
+        "//proto/build_tools/svclib",
+    ],
+)
+
+go_binary(
+    name = "svcctl",
+    embed = [":svcctl_lib"],
+    visibility = ["//visibility:public"],
+)

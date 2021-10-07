@@ -1,0 +1,26 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "edit",
+    srcs = [
+        "buildozer.go",
+        "default_buildifier.go",
+        "edit.go",
+        "fix.go",
+        "types.go",
+    ],
+    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/edit",
+    importpath = "github.com/bazelbuild/buildtools/edit",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/bazelbuild/buildtools/api_proto:api_proto_go_proto",
+        "//vendor/github.com/bazelbuild/buildtools/build",
+        "//vendor/github.com/bazelbuild/buildtools/build_proto:go_default_library",
+        "//vendor/github.com/bazelbuild/buildtools/file",
+        "//vendor/github.com/bazelbuild/buildtools/labels",
+        "//vendor/github.com/bazelbuild/buildtools/lang",
+        "//vendor/github.com/bazelbuild/buildtools/tables",
+        "//vendor/github.com/bazelbuild/buildtools/wspace",
+        "//vendor/github.com/golang/protobuf/proto",
+    ],
+)

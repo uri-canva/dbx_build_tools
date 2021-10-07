@@ -1,0 +1,28 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "svclib",
+    srcs = [
+        "constants.go",
+        "healthchecks.go",
+        "service.go",
+    ],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/svcctl/svclib",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/build_tools/svclib",
+        "//vendor/github.com/gogo/protobuf/proto",
+        "//vendor/google.golang.org/grpc",
+    ],
+)
+
+go_test(
+    name = "svclib_test",
+    srcs = ["service_test.go"],
+    embed = [":svclib"],
+    deps = [
+        "//proto/build_tools/svclib",
+        "//runfiles",
+        "//vendor/github.com/stretchr/testify/require",
+    ],
+)

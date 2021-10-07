@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "build-merge_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/build-merge",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//vendor/github.com/bazelbuild/buildtools/build",
+        "//vendor/github.com/bazelbuild/buildtools/warn",
+    ],
+)
+
+go_binary(
+    name = "build-merge",
+    embed = [":build-merge_lib"],
+    visibility = ["//visibility:public"],
+)

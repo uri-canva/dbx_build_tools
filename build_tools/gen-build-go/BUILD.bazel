@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "gen-build-go_lib",
+    srcs = ["gen-build-go.go"],
+    importpath = "github.com/dropbox/dbx_build_tools/build_tools/gen-build-go",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//vendor/github.com/bazelbuild/buildtools/build",
+        "//vendor/github.com/bazelbuild/buildtools/wspace",
+        "//vendor/golang.org/x/mod/modfile",
+        "//vendor/golang.org/x/mod/module",
+    ],
+)
+
+go_binary(
+    name = "gen-build-go",
+    embed = [":gen-build-go_lib"],
+    visibility = ["//visibility:public"],
+)

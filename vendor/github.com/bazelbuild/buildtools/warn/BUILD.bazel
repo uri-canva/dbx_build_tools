@@ -1,7 +1,7 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
-    name = "warn",
+    name = "go_default_library",
     srcs = [
         "multifile.go",
         "types.go",
@@ -18,14 +18,39 @@ go_library(
         "warn_operation.go",
         "warn_visibility.go",
     ],
-    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/warn",
     importpath = "github.com/bazelbuild/buildtools/warn",
     visibility = ["//visibility:public"],
     deps = [
-        "//vendor/github.com/bazelbuild/buildtools/build",
-        "//vendor/github.com/bazelbuild/buildtools/bzlenv",
-        "//vendor/github.com/bazelbuild/buildtools/edit",
-        "//vendor/github.com/bazelbuild/buildtools/labels",
-        "//vendor/github.com/bazelbuild/buildtools/tables",
+        "//build:go_default_library",
+        "//bzlenv:go_default_library",
+        "//edit:go_default_library",
+        "//labels:go_default_library",
+        "//tables:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    size = "small",
+    srcs = [
+        "types_test.go",
+        "warn_bazel_api_test.go",
+        "warn_bazel_operation_test.go",
+        "warn_bazel_test.go",
+        "warn_control_flow_test.go",
+        "warn_cosmetic_test.go",
+        "warn_deprecated_test.go",
+        "warn_docstring_test.go",
+        "warn_macro_test.go",
+        "warn_naming_test.go",
+        "warn_operation_test.go",
+        "warn_test.go",
+        "warn_visibility_test.go",
+    ],
+    embed = [":go_default_library"],
+    deps = [
+        "//build:go_default_library",
+        "//tables:go_default_library",
+        "//testutils",
     ],
 )

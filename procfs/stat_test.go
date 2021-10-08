@@ -1,6 +1,3 @@
-// +build linux
-
-// Only build on Linux, since the use of procfs is platform specific.
 package procfs
 
 import (

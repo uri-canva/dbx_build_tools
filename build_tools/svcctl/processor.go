@@ -220,7 +220,7 @@ func (s *SvcCtlProcessor) Diagnostics(ctx context.Context, req *svclib_proto.Dia
 
 		pid := svc.getPid()
 		totalCpuTime := time.Duration(0)
-		totalRssMb := int64(0)
+		totalRssMb := uint64(0)
 		hasErr := false
 
 		descendents, err := procfs.GetProcessDescendents(pid)
@@ -255,7 +255,7 @@ func (s *SvcCtlProcessor) Diagnostics(ctx context.Context, req *svclib_proto.Dia
 		resp.SvcMetrics = append(resp.SvcMetrics, &svclib_proto.DiagnosticsResp_Metrics{
 			ServiceName: proto.String(name),
 			CpuTimeMs:   proto.Int64(int64(totalCpuTime / time.Millisecond)),
-			RssMb:       proto.Int64(totalRssMb),
+			RssMb:       proto.Int64(int64(totalRssMb)),
 		})
 	}
 

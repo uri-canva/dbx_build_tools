@@ -1,9 +1,8 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "file",
+    name = "go_default_library",
     srcs = ["file.go"],
-    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/file",
     importpath = "github.com/bazelbuild/buildtools/file",
     visibility = ["//visibility:public"],
 )

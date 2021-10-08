@@ -8,19 +8,12 @@ go_library(
     ],
     importpath = "github.com/dropbox/dbx_build_tools/procfs",
     visibility = ["//visibility:public"],
+    deps = ["//vendor/github.com/shirou/gopsutil/v3/process"],
 )
 
 go_test(
     name = "procfs_test",
     srcs = ["stat_test.go"],
     embed = [":procfs"],
-    deps = select({
-        "@io_bazel_rules_go//go/platform:android": [
-            "//vendor/gopkg.in/check.v1:check_v1",
-        ],
-        "@io_bazel_rules_go//go/platform:linux": [
-            "//vendor/gopkg.in/check.v1:check_v1",
-        ],
-        "//conditions:default": [],
-    }),
+    deps = ["//vendor/gopkg.in/check.v1:check_v1"],
 )

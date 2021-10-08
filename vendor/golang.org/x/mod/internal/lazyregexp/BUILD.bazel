@@ -1,9 +1,0 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "lazyregexp",
-    srcs = ["lazyre.go"],
-    importmap = "github.com/dropbox/dbx_build_tools/vendor/golang.org/x/mod/internal/lazyregexp",
-    importpath = "golang.org/x/mod/internal/lazyregexp",
-    visibility = ["//vendor/golang.org/x/mod:__subpackages__"],
-)

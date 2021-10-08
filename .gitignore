@@ -1,3 +1,4 @@
+/.idea
 /bazel-bin
 /bazel-dbx_build_tools
 /bazel-out

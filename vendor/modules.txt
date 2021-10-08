@@ -1,3 +1,5 @@
+# github.com/StackExchange/wmi v1.2.1
+github.com/StackExchange/wmi
 # github.com/bazelbuild/buildtools v0.0.0-20211007154642-8dd79e56e98e
 ## explicit
 github.com/bazelbuild/buildtools/api_proto
@@ -16,6 +18,9 @@ github.com/bazelbuild/buildtools/wspace
 github.com/c9s/goprocinfo/linux
 # github.com/davecgh/go-spew v1.1.0
 github.com/davecgh/go-spew/spew
+# github.com/go-ole/go-ole v1.2.5
+github.com/go-ole/go-ole
+github.com/go-ole/go-ole/oleutil
 # github.com/gogo/protobuf v1.3.2
 ## explicit
 github.com/gogo/protobuf/gogoproto
@@ -36,10 +41,23 @@ github.com/kr/pretty
 github.com/kr/text
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
+# github.com/shirou/gopsutil v3.21.9+incompatible
+## explicit
+# github.com/shirou/gopsutil/v3 v3.21.9
+## explicit
+github.com/shirou/gopsutil/v3/cpu
+github.com/shirou/gopsutil/v3/internal/common
+github.com/shirou/gopsutil/v3/mem
+github.com/shirou/gopsutil/v3/net
+github.com/shirou/gopsutil/v3/process
 # github.com/stretchr/testify v1.7.0
 ## explicit
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
+# github.com/tklauser/go-sysconf v0.3.9
+github.com/tklauser/go-sysconf
+# github.com/tklauser/numcpus v0.3.0
+github.com/tklauser/numcpus
 # golang.org/x/mod v0.5.1
 ## explicit
 golang.org/x/mod/internal/lazyregexp
@@ -60,6 +78,7 @@ golang.org/x/sync/errgroup
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
+golang.org/x/sys/windows
 # golang.org/x/text v0.3.3
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform

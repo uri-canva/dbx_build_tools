@@ -1,10 +1,16 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
-    name = "wspace",
+    name = "go_default_library",
     srcs = ["workspace.go"],
-    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/wspace",
     importpath = "github.com/bazelbuild/buildtools/wspace",
     visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/bazelbuild/buildtools/build"],
+    deps = ["//build:go_default_library"],
+)
+
+go_test(
+    name = "go_default_test",
+    size = "small",
+    srcs = ["workspace_test.go"],
+    embed = [":go_default_library"],
 )

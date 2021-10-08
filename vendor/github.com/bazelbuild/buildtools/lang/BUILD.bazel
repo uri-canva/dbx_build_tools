@@ -18,10 +18,11 @@ generate_tables(
 )
 
 go_library(
-    name = "go_default_library",
+    name = "lang",
     srcs = [
         "tables.go",  # keep
     ],
+    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/lang",
     importpath = "github.com/bazelbuild/buildtools/lang",
     visibility = ["//visibility:public"],
     deps = [

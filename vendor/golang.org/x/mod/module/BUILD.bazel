@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "module",
+    srcs = [
+        "module.go",
+        "pseudo.go",
+    ],
+    importmap = "github.com/dropbox/dbx_build_tools/vendor/golang.org/x/mod/module",
+    importpath = "golang.org/x/mod/module",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/golang.org/x/mod/internal/lazyregexp",
+        "//vendor/golang.org/x/mod/semver",
+        "//vendor/golang.org/x/xerrors",
+    ],
+)

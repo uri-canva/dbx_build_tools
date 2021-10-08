@@ -1,23 +1,17 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
-    name = "go_default_library",
+    name = "bzlenv",
     srcs = ["bzlenv.go"],
+    importmap = "github.com/dropbox/dbx_build_tools/vendor/github.com/bazelbuild/buildtools/bzlenv",
     importpath = "github.com/bazelbuild/buildtools/bzlenv",
     visibility = ["//visibility:public"],
-    deps = ["//build:go_default_library"],
-)
-
-go_test(
-    name = "bzlenv_test",
-    size = "small",
-    srcs = ["bzlenv_test.go"],
-    embed = [":go_default_library"],
+    deps = ["//vendor/github.com/bazelbuild/buildtools/build"],
 )
 
 go_test(
     name = "go_default_test",
     srcs = ["bzlenv_test.go"],
-    embed = [":go_default_library"],
+    embed = [":bzlenv"],
     deps = ["//build:go_default_library"],
 )

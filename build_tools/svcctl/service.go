@@ -24,7 +24,7 @@ import (
 	"github.com/dropbox/dbx_build_tools/build_tools/svcctl/state_machine"
 	"github.com/dropbox/dbx_build_tools/cputime"
 	"github.com/dropbox/dbx_build_tools/procfs"
-	 svclib_proto "github.com/dropbox/dbx_build_tools/proto/build_tools/svclib"
+	svclib_proto "github.com/dropbox/dbx_build_tools/proto/build_tools/svclib"
 	"github.com/dropbox/dbx_build_tools/runfiles"
 )
 
@@ -67,7 +67,7 @@ func CommandFromProto(proto_cmd *svclib_proto.Command) *Command {
 
 func (c Command) GetExecutor() *proc.Pcmd {
 	// no need to do $RUNFILES substitution here, bash does it automatically
-	executor := proc.New("/bin/bash", "-c", "--", c.Cmd)
+	executor := proc.New("bash", "-c", "--", c.Cmd)
 	executor.Cmd.Env = c.EnvVars
 
 	return executor

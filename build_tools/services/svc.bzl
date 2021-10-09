@@ -53,7 +53,7 @@ def _create_version_file(ctx, inputs, output):
             inputs = inputs,
             tools = [],  # Ensure inputs in the host configuration are not treated specially.
             outputs = [output],
-            command = "/bin/date --rfc-3339=seconds > {}".format(
+            command = "date --rfc-3339=seconds > {}".format(
                 output.path,
             ),
             mnemonic = "SvcVersionFile",
@@ -256,7 +256,7 @@ def service_impl(ctx):
         ctx,
         services = services.values(),
         extensions = extensions,
-        extra_args = ["/bin/true"],
+        extra_args = ["true"],
     )
 
     runfiles = runfiles.merge(ctx.runfiles(
@@ -343,7 +343,7 @@ def service_group_impl(ctx):
         ctx,
         services = services.values(),
         extensions = extensions,
-        extra_args = ["/bin/true"],
+        extra_args = ["true"],
     )
     runfiles = runfiles.merge(ctx.runfiles(
         files = ctx.files.services,

@@ -1,4 +1,5 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+set -eu
 abs_binary="$0"
 if [[ ! "$abs_binary" == /* ]]; then
     abs_binary=$(pwd)/"$abs_binary"
@@ -8,18 +9,18 @@ while true; do
     if [[ -d "$abs_binary".runfiles ]] || [[ ! -L "$abs_binary" ]]; then
         break
     fi
-    link_target=$(/bin/readlink "$abs_binary")
+    link_target=$(readlink "$abs_binary")
     if [[ "$link_target" == /* ]]; then
         abs_binary="$link_target"
     else
-        abs_binary=$(/usr/bin/dirname "$abs_binary")/"$link_target"
+        abs_binary=$(dirname "$abs_binary")/"$link_target"
     fi
 done
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # readlink -f is not supported on mac, but Python should be available.
     runfiles="$(python -c "import os;print(os.path.realpath('$abs_binary.runfiles'))")"
 else
-    runfiles="$(/bin/readlink -f "$abs_binary".runfiles)"
+    runfiles="$(readlink -f "$abs_binary".runfiles)"
 fi
 
 export RUNFILES="$runfiles"/{workspace_name}

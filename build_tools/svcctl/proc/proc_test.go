@@ -6,7 +6,7 @@ import (
 )
 
 func TestTrue(t *testing.T) {
-	p := New("/bin/true")
+	p := New("true")
 	if p.Exited() {
 		t.Fatalf("Process marked as exited before it was started")
 	}
@@ -25,7 +25,7 @@ func TestTrue(t *testing.T) {
 }
 
 func TestFalse(t *testing.T) {
-	p := New("/bin/false")
+	p := New("false")
 	if p.Exited() {
 		t.Fatalf("Process marked as exited before it was started")
 	}
@@ -44,7 +44,7 @@ func TestFalse(t *testing.T) {
 }
 
 func TestKill(t *testing.T) {
-	p := New("/bin/sleep", "infinity")
+	p := New("sleep", "infinity")
 	if p.Exited() {
 		t.Fatalf("Process marked as exited before it was started")
 	}
@@ -66,7 +66,7 @@ func TestKill(t *testing.T) {
 }
 
 func TestGORACE(t *testing.T) {
-	p := New("/bin/true")
+	p := New("true")
 	if err := p.Start(); err != nil {
 		t.Fatalf("Start error: %s", err)
 	}

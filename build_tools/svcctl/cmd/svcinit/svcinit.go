@@ -319,7 +319,7 @@ func main() {
 	// -svc.services-only should never be true inside `bazel test`
 	insideBazelTest := !servicesOnly
 
-	svcCtlCmd := exec.Command(runfiles.MustDataPath("@dbx_build_tools//build_tools/svcctl/cmd/svcd/svcd"), verbosityFlag)
+	svcCtlCmd := exec.Command(runfiles.MustDataPath("@dbx_build_tools//build_tools/svcctl/cmd/svcd/svcd_/svcd"), verbosityFlag)
 	svcCtlCmd.Stdout = os.Stdout
 	svcCtlCmd.Stderr = os.Stderr
 	svcCtlCmd.Dir = os.Getenv("RUNFILES")

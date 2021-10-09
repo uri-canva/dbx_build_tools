@@ -25,7 +25,7 @@ import (
 	"github.com/dropbox/dbx_build_tools/build_tools/junit"
 	"github.com/dropbox/dbx_build_tools/build_tools/svcctl"
 	"github.com/dropbox/dbx_build_tools/build_tools/svcctl/svclib"
-	 svclib_proto "github.com/dropbox/dbx_build_tools/proto/build_tools/svclib"
+	svclib_proto "github.com/dropbox/dbx_build_tools/proto/build_tools/svclib"
 	"github.com/dropbox/dbx_build_tools/runfiles"
 )
 
@@ -319,7 +319,7 @@ func main() {
 	// -svc.services-only should never be true inside `bazel test`
 	insideBazelTest := !servicesOnly
 
-	svcCtlCmd := exec.Command(runfiles.MustDataPath("@dbx_build_tools//go/src/dropbox/build_tools/svcctl/cmd/svcd/svcd_norace"), verbosityFlag)
+	svcCtlCmd := exec.Command(runfiles.MustDataPath("@dbx_build_tools//build_tools/svcctl/cmd/svcd/svcd"), verbosityFlag)
 	svcCtlCmd.Stdout = os.Stdout
 	svcCtlCmd.Stderr = os.Stderr
 	svcCtlCmd.Dir = os.Getenv("RUNFILES")

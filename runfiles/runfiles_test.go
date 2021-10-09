@@ -27,11 +27,11 @@ func TestRunfiles(t *testing.T) {
 
 	isBazelTest := os.Getenv("TEST_SRCDIR") != ""
 	if isBazelTest {
-		dataPath1, err := DataPath("//go/src/dropbox/runfiles/test_data.empty")
+		dataPath1, err := DataPath("//runfiles/test_data.empty")
 		if err != nil {
 			t.Fatalf("expected valid path: %v", err)
 		}
-		dataPath2, err := DataPath("//go/src/dropbox/runfiles/test_data.empty")
+		dataPath2, err := DataPath("//runfiles/test_data.empty")
 		if err != nil {
 			t.Fatalf("expected valid path: %v", err)
 		}
@@ -64,7 +64,7 @@ func TestCompiledStandalone(t *testing.T) {
 }
 
 func TestConfigRunfiles(t *testing.T) {
-	baseDir, err := DataPath("//go/src/dropbox/runfiles/data")
+	baseDir, err := DataPath("//runfiles/data")
 	if err != nil {
 		t.Fatalf("failed to resolve config base: %v", err)
 	}

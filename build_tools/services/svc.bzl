@@ -21,13 +21,13 @@ exec $RUNFILES/{service_launcher} {launcher_args} --svc.service-defs=$RUNFILES/{
 
 _svcd_tool_attr = attr.label(
     cfg = "target",
-    default = Label("//go/src/dropbox/build_tools/svcctl/cmd/svcd:svcd_norace"),
+    default = Label("//build_tools/svcctl/cmd/svcd:svcd"),
     executable = True,
 )
 
 _svcinit_tool_attr = attr.label(
     cfg = "target",
-    default = Label("//go/src/dropbox/build_tools/svcctl/cmd/svcinit:svcinit_norace"),
+    default = Label("//build_tools/svcctl/cmd/svcinit:svcinit"),
     executable = True,
 )
 

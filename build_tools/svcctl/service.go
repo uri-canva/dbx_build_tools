@@ -56,6 +56,9 @@ func CommandFromProto(proto_cmd *svclib_proto.Command) *Command {
 			// leak $HOME because in itest, we are manually overriding this to a custom location
 			// and this is the easiest way to propagate it to services for use with local development
 			fmt.Sprintf("HOME=%s", os.Getenv("HOME")),
+
+			// forward the PATH so it doesn't fall back to the default
+			fmt.Sprintf("PATH=%s", os.Getenv("PATH")),
 		},
 	}
 	for _, ev := range proto_cmd.EnvVars {

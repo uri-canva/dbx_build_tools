@@ -26,6 +26,11 @@ func newProcess(pid int32) (*process.Process, error) {
 
 func children(p *process.Process) ([]*process.Process, error) {
 	cs, err := p.Children()
+	// gopsutil uses pgrep to find children, so we need to handle
+	// errors that occur when the process has no children.
+	if err != nil && err.Error() == "exit status 1" {
+		return []*process.Process{}, nil
+	}
 	return cs, handleESRCH(err)
 }
 

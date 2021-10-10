@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eux
+set -eu
 
 # Use a var to avoid a pipe - that would make number of processes nondeterministic
 out=$(ps ux)

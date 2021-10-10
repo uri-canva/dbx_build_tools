@@ -1,14 +1,38 @@
 package procfs
 
-func GetProcessDescendents(parentPid int) ([]int, error) {
-	// TODO: gopsutil doesn't implement this, have to implement it ourselves
-	// https://github.com/shirou/gopsutil/issues/111
-	return ChildPids(parentPid);
+import (
+	"github.com/shirou/gopsutil/v3/process"
+)
+
+func GetProcessDescendants(parentPid int) ([]int, error) {
+	parentProcess, err := newProcess(castPid(parentPid))
+	if err != nil {
+		return nil, err
+	}
+
+	descendantsPids := []int{}
+	stack := []*process.Process{parentProcess}
+	var lastErr error
+	for len(stack) > 0 {
+		top := len(stack) - 1
+		parent := stack[top]
+		stack = stack[:top]
+		children, err := children(parent)
+		if err != nil {
+			lastErr = err
+			continue
+		}
+		for _, child := range children {
+			descendantsPids = append(descendantsPids, int(child.Pid))
+			stack = append(stack, child)
+		}
+	}
+	return descendantsPids, lastErr
 }
 
 // Return all immediate child process for a pid
 func ChildPids(pid int) ([]int, error) {
-	p, err := newProcess(pid)
+	p, err := newProcess(castPid(pid))
 	if err != nil {
 		return nil, err
 	}

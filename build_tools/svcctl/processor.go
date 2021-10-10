@@ -15,7 +15,7 @@ import (
 
 	"github.com/dropbox/dbx_build_tools/cputime"
 	"github.com/dropbox/dbx_build_tools/procfs"
-	 svclib_proto "github.com/dropbox/dbx_build_tools/proto/build_tools/svclib"
+	svclib_proto "github.com/dropbox/dbx_build_tools/proto/build_tools/svclib"
 )
 
 type SvcCtlProcessor struct {
@@ -223,7 +223,7 @@ func (s *SvcCtlProcessor) Diagnostics(ctx context.Context, req *svclib_proto.Dia
 		totalRssMb := uint64(0)
 		hasErr := false
 
-		descendents, err := procfs.GetProcessDescendents(pid)
+		descendents, err := procfs.GetProcessDescendants(pid)
 		if err == nil {
 			for _, pid := range descendents {
 
@@ -234,7 +234,7 @@ func (s *SvcCtlProcessor) Diagnostics(ctx context.Context, req *svclib_proto.Dia
 				}
 
 				// we want to ignore ESRCH since it's non fatal:
-				// when the pid retrieved by the GetProcessDescendents exits before
+				// when the pid retrieved by the GetProcessDescendants exits before
 				// we manage to make the call for VszRssBytes.
 				_, rss, err := procfs.GetVszRssBytes(pid)
 				if err != nil && err != syscall.ESRCH {

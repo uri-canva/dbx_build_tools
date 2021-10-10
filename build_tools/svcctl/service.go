@@ -526,7 +526,7 @@ func (svc *serviceDef) appendSanitizerErrors() {
 func forceSignalProcessTree(pids []int, sig syscall.Signal) error {
 	var lastErr error
 	for _, pid := range pids {
-		allChildren, err := procfs.GetProcessDescendents(pid)
+		allChildren, err := procfs.GetProcessDescendants(pid)
 		if err != nil {
 			lastErr = err
 			continue
@@ -607,6 +607,7 @@ func (svc *serviceDef) stop(sig syscall.Signal) error {
 						svc.logger.Println("Process not dead yet - issuing SIGKILL to entire tree")
 					}
 					if killErr := forceSignalProcessTree(allPidsToForceKill, syscall.SIGKILL); killErr != nil {
+						svc.logger.Printf("Failed to kill process tree: %v", killErr)
 						if svc.exited() {
 							stopped = true
 						}

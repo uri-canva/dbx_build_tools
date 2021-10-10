@@ -21,7 +21,7 @@ var (
 func RecursiveCPUTime(rootPID int) (time.Duration, error) {
 	// Note: this can probably result in double counting if a process
 	// terminates while we're iterating.
-	pids, err := procfs.GetProcessDescendents(rootPID)
+	pids, err := procfs.GetProcessDescendants(rootPID)
 	if err != nil {
 		return 0, err
 	}
